@@ -4,6 +4,9 @@
 #include <string.h>
 #include <stdbool.h>
 
+#define SUBRAYADO "\e[4m"
+#define POR_DEFECTO "\033[0m"
+
 void transMayuscula(char cad3[], char letra[]);
 void comprobarSubcadena();
 void concatenarStrings();
@@ -11,45 +14,57 @@ void sustituirStrings();
 void convMayusculas();
 void verificarNumeros();
 void fraseMayuscula();
-char inicioPrograma();
-bool opcionesPrograma(char opcion);
+char getUserInput();
+void opcionesPrograma(char opcion);
+void menu();
 int main()
 {
-
     char opcion;
-
     do{
+        do{
+        menu();
+        opcion = getUserInput();
+        }while(!opcion);
+        opcionesPrograma(opcion);
+        if(opcion != '7'){
+            printf("\n\n\n\nPresiona cualquier tecla para continuar...\n");
+            while(getchar()!='\n');
+        }
+    }while(opcion != '7');
+
+    return 0;
+}
+
+
+void menu(){
     system("clear");
     printf("\t\t\t#########################################################\n");
     printf("\t\t\t#\t\tBienvenido a esta aplicacion\t\t#\n");
     printf("\t\t\t#\t\t\t\t\t\t\t#\n");
-    printf("\t\t\t#\t\t  Selecciona una opcion\t\t\t#\n");
+    printf("\t\t\t#\t\t    "SUBRAYADO"Selecciona una opcion"POR_DEFECTO"\t\t#\n");
+    printf("\t\t\t#\t\t\t\t\t\t\t#\n");
     printf("\t\t\t#\t\t1.Convertir toLower y toUpper \t\t#\n");
     printf("\t\t\t#\t\t2.Verificacion de numeros\t\t#\n");
     printf("\t\t\t#\t\t3.Convertir letra toUpper\t\t#\n");
     printf("\t\t\t#\t\t4.Sustituir strings\t\t\t#\n");
     printf("\t\t\t#\t\t5.Concatenar strings\t\t\t#\n");
     printf("\t\t\t#\t\t6.Comprobar subcadenas\t\t\t#\n");
+    printf("\t\t\t#\t\t7.Salir\t\t\t\t\t#\n");
     printf("\t\t\t#\t\t\t\t\t\t\t#\n");
     printf("\t\t\t#########################################################\n");
-
-
-    opcion = inicioPrograma();
-
-    }while(!opcionesPrograma(opcion));
-
-    return 0;
 }
 
-char inicioPrograma(){
+char getUserInput(){
         printf("\n\nIngrese un numero de opcion:\n");
         char opcion = getchar();
         while(getchar()!='\n');
+        if(opcion < '1' || opcion > '7')
+            opcion = '\0';
 
         return opcion;
 }
 
-bool opcionesPrograma(char opcion){
+void opcionesPrograma(char opcion){ //Si se convierte a bool, usar return true y false.
    switch(opcion){
     case '1':
         fraseMayuscula();
@@ -69,11 +84,15 @@ bool opcionesPrograma(char opcion){
     case '6':
         comprobarSubcadena();
         break;
+    case '7':
+        printf("Finalizando el programa...\n");
+        break;
     default:
-        return false;
+        break;
+//        return false;
 
     }
-    return true;
+//    return true;
 }
 
 void transMayuscula(char cad3[], char letra[])
@@ -84,7 +103,7 @@ void transMayuscula(char cad3[], char letra[])
         {
             if(cad3[j]==letra[1])
             {
-                cad3[j]=letra[1]-32;
+                cad3[j]=letra[1]-32;  //Sustituye al switch de abajo
                 /*				switch(letra[1]){
                 					case -79:
                 						cad3[j]=-111;
@@ -201,6 +220,7 @@ void convMayusculas()
     while(getchar()!='\n');			//vacia buffer teclado
     printf("Introduce un caracter:\n");
     scanf("%[^\n]s", cad2);
+    while(getchar()!='\n');
 
     transMayuscula(cad, cad2);
     printf("\"%s\" para el caracter ", cad);
@@ -225,7 +245,7 @@ void verificarNumeros()
 
     printf("Introduce un numero: \n");
     scanf("%[^\n]s", cad);
-
+    while(getchar()!='\n');
     while(cad[i])
     {
         if(isdigit(cad[i]))
@@ -264,7 +284,7 @@ void fraseMayuscula()
     int i=0;
     printf("Introduce una cadena de texto:\n");
     scanf("%[^\n]s", cad);
-
+    while(getchar()!='\n');
     printf("Cadena introducida en minúsculas: ");
     while(cad[i])
         putchar(tolower(cad[i++]));
